@@ -10,11 +10,16 @@ import FlatButton from 'material-ui/FlatButton';
 class ImageResults extends Component {
 
   state = {
-    searchText: '',
-    amount: 15, 
-    apiUrl: 'https://pixabay.com/api',
-    apiKey: '11422388-cf78b5aacb8fab8ae2dc796c1',
-    images: []
+    open: false,
+    currentImg: ''
+  }
+
+  handleOpen = img => {
+    this.setState({ open: true, currentImg: img});
+  }
+
+  handleClose = img => {
+    this.setState({ open: false });
   }
   render() {
     let imageListContent;
@@ -35,7 +40,7 @@ class ImageResults extends Component {
           }
 
           actionIcon={
-            <IconButton>
+            <IconButton onClick={() => this.handleOpen(img.largeImageURL)}>
             <ZoomIn color="white" />
             </IconButton>
           }>
@@ -50,7 +55,20 @@ class ImageResults extends Component {
     } else {
       imageListContent = null;
     }
-    return <div>{imageListContent} </div>;
+
+    const actions = [
+    <FlatButton label="Close" primary={true} onClick={this.handleClose} />
+]
+
+    return <div>{imageListContent}
+    <Dialog
+    actions={actions}
+    modal={false}
+    open={this.state.open}
+    onRequestClose={this.handleClose}>
+    <img src={this.state.currentImg} alt="" style={{width: '100%'}} />
+
+    </Dialog></div>;
   }
 }
 
