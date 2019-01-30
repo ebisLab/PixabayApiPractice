@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import axios from 'axios'; //send request 
 
 
 class Search extends Component {
@@ -14,8 +15,23 @@ class Search extends Component {
     images: []
   }
 
-  
+  //everytime we type it should update that state
+  onTextChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value}, () => {
+        axios
+          .get(
+            `${this.state.apiURL}/?key={this.state.apiKey}&qu=${
+              this.state.searchText
+            }&image_type=photo&per_page=${this.state.amount}&safesearch=true`
+            )
+        .then(res => this.setState({ images: res.data.hits }))
+        .catch(err => console.log(err));
+      });
+  };
+
+  //send request to API. 
   render() {
+    console.log(this.state.images);
     return (
       
       <div>
