@@ -17,12 +17,22 @@ class Search extends Component {
 
   //everytime we type it should update that state
   onTextChange = e => {
-    this.setState({ [e.target.name]: e.target.value}, () => {
-        axios.get(`${this.state.apiUrl}/?key=${this.state.apiKey}&q=${this.state.searchText}&image_type=photo&
-          per_page=${this.state.amount}&safesearch=true`
+    const val= e.target.value;
+
+    this.setState({ [e.target.name]: val}, () => {
+      if(val ==='') {
+        this.setState({images: []});
+      } else {
+        axios
+        .get(
+          `${this.state.apiUrl}/?key=${this.state.apiKey}&q=${
+            this.state.searchText
+          }&image_type=photo&per_page=${this.state.amount}&safesearch=true`
             )
         .then(res => this.setState({ images: res.data.hits }))
         .catch(err => console.log(err));
+      }
+        
       });
   };
 
