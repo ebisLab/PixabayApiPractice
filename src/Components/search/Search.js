@@ -68,6 +68,7 @@ class Search extends Component {
         <br />
 
 {this.state.images.length > 0 ? (<ImageResults images={this.state.images} />) : null} 
+
      </div>
 //Here?
       
